@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<style>
+    #divbody {
+        position: relative;
+        width: 50%;
+        left: 25%;
+        background-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 1px 1px 2px black;
+        margin-top: 20px;
+    }
+    body {
+        background-image: url('https://d3i6fh83elv35t.cloudfront.net/static/2018/08/Books_HD_8314929977-1024x682.jpg');
+        background-position-y: 40%;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+
+<body>
+    <div id="divbody">
+        <div class="container">
+            <center>
+                <h1>Enrollment Form</h1><br>
+            </center>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fname"><i class="fas fa-user"></i>&nbsp;&nbsp; Firstname</label>
+                    <input type="text" id="fname" class="form-control" placeholder="firstname" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="lname"><i class="fas fa-user"></i>&nbsp;&nbsp; Lastname</label>
+                    <input type="text" id="lname" class="form-control" placeholder="lastname" required-area>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="subject"><i class="fas fa-book"></i>&nbsp;&nbsp;Subject</label>
+                <input type="text" id="subject" class="form-control" placeholder="Subject" required>
+            </div>
+            <div class="form-group">
+                <label for="subject"><i class="fas fa-envelope"></i>&nbsp;&nbsp;Email</label>
+                <input type="text" id="email" class="form-control" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject"><i class="fas fa-laptop"></i>&nbsp;&nbsp;Course and Year</label>
+                <input type="text" id="cy" class="form-control" placeholder="Course and Year" required>
+            </div>
+            <button type="submit" id="btnSubmit" class="btn btn-primary">Enroll</button>
+        </div><br>
+
+
+    </div>
+    <!-- <div class="modal" id="mymodal"><div class="modal-content"><h1 class="d-flex justify-content-center">ENROLLED SUCCESSFULLY</h1></div></div> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+                var complete = false;
+                $('form input').each(function () {
+                    if ($(this).val() == "") {
+                        complete = true;
+                        console.log($(this).val());
+                    }
+                });
+                if ($(':input').val() !=  "") {
+                    console.log("one/two".slice(0, 3))
+                    var subject1 = $("#subject").val();
+                    var name1 = $("#fname").val() + " " + $("#lname").val();
+                    var email1 = $("#email").val();
+                    var cy1 = $("#cy").val();
+                    // $('#mymodal').modal();setTimeout(function(){$('#mymodal').modal('hide');},2000);
+                    $.ajax({
+                        type: "POST",
+                        crossDomain: true,
+                        url: "http://127.0.0.1:3000/enroll",
+                        data: JSON.stringify({ name: name1, subject: subject1, email: email1, cy: cy1 }),
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    })
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Done',
+                        text: 'Sucessfully Enrolled!',
+                    })
+                    $("input").val("");
+                }else{
+                    Swal.fire({
+                            type: 'error',
+                            title: 'All Fields Are Required',
+                            text: 'Please Fill out all Fields'
+                        })
+                }
+            })
+        });
+    </script>
+
+</body>
+
+</html>
